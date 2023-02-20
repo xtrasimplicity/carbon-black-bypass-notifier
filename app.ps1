@@ -74,21 +74,10 @@ function Fetch-Sensors-With-States {
 WriteToVarAndConsole ([ref]$scriptOutput) "Checking Carbon Black for devices in bypassed state..."
 $sensors = Fetch-Sensors-With-States $apiEndpoint $orgId $apiSecret $apiClientID $states
 
-WriteToVarAndConsole ([ref]$scriptOutput) "Found $($sensors.Count) devices in API response"
-WriteToVarAndConsole ([ref]$scriptOutput) ""
-WriteToVarAndConsole ([ref]$scriptOutput) ""
-WriteToVarAndConsole ([ref]$scriptOutput) "Device | Last Seen | Operating System|"
-WriteToVarAndConsole ([ref]$scriptOutput) "=======|===========|=================|"
+WriteToVarAndConsole ([ref]$scriptOutput) "Found $($sensors.Count) devices in API response`n`n"
 
+writeToVarAndConsole ([ref]$scriptOutput) ($sensors | Format-Table -Property name,last_reported_time,os,os_version | Out-String)
 
-foreach($sensor in $sensors) {
-  WriteToVarAndConsole ([ref]$scriptOutput) "$($sensor.name)|$($sensor.last_reported_time)|$($sensor.os) $($sensor.os_version)"
-}
-
-WriteToVarAndConsole ([ref]$scriptOutput) ""
-WriteToVarAndConsole ([ref]$scriptOutput) ""
-WriteToVarAndConsole ([ref]$scriptOutput) "Good Bye!"
-WriteToVarAndConsole ([ref]$scriptOutput) "FYI this Script is running on $(hostname)"
-
+WriteToVarAndConsole ([ref]$scriptOutput) "`n`nGood Bye!`nFYI this Script is running on $(hostname)"
 
 sendMail -to $recipientAddress -from $senderAddress -subject "Carbon Black Sensor bypass status" -message $scriptOutput
