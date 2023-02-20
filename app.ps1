@@ -70,13 +70,12 @@ function Fetch-Sensors-With-States {
    return $parsedResult.results
 }
 
-
 WriteToVarAndConsole ([ref]$scriptOutput) "Checking Carbon Black for devices in bypassed state..."
 $sensors = Fetch-Sensors-With-States $apiEndpoint $orgId $apiSecret $apiClientID $states
 
 WriteToVarAndConsole ([ref]$scriptOutput) "Found $($sensors.Count) devices in API response`n`n"
 
-writeToVarAndConsole ([ref]$scriptOutput) ($sensors | Format-Table -Property name,last_reported_time,os,os_version | Out-String)
+writeToVarAndConsole ([ref]$scriptOutput) ($sensors | Select-Object -Property name,last_reported_time,os,os_version | ConvertTo-Html -As Table -Head '<style type="text/css">th,td { text-align:center; };</style>' | Out-String)
 
 WriteToVarAndConsole ([ref]$scriptOutput) "`n`nGood Bye!`nFYI this Script is running on $(hostname)"
 
