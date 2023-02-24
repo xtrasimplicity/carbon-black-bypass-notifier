@@ -49,7 +49,7 @@ function Fetch-Sensors-With-States {
    }
 
    $url = "https://$($endpoint)/appservices/v6/orgs/$($organisationId)/devices/_search"
-   $requestBody = '{"criteria": { "deployment_type": ["ENDPOINT"], "status": ' + ($states | ConvertTo-Json) + '}}'
+   $requestBody = '{"rows": 10000, "criteria": { "deployment_type": ["ENDPOINT"], "status": ' + ($states | ConvertTo-Json) + '}}'
 
    try {
     $result = Invoke-WebRequest -UseBasicParsing $url -Method POST -Body $requestBody -Headers $headers -ErrorAction Continue -WarningAction Continue
